@@ -1,0 +1,97 @@
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    /* Ajoutez des styles personnalisés ici */
+    body {
+        background-color: #f8f9fa; /* Couleur de fond */
+        color: #495057; /* Couleur du texte principal */
+    }
+
+    h1 {
+        color: #007bff; /* Couleur du titre */
+    }
+
+    form {
+        margin-bottom: 20px; /* Marge en bas des formulaires */
+    }
+
+    label {
+        margin-right: 10px; /* Marge à droite des étiquettes */
+    }
+
+    select,
+    input[type="date"] {
+        width: 150px; /* Largeur des champs de sélection et de date */
+        margin-right: 10px; /* Marge à droite des champs de sélection et de date */
+    }
+
+    button {
+        background-color: #343a40; /* Couleur de fond du bouton */
+        color: #ffffff; /* Couleur du texte du bouton */
+        border: none; /* Supprime la bordure du bouton */
+        padding: 8px 16px; /* Rembourrage du bouton */
+        cursor: pointer; /* Curseur de type pointeur au survol */
+    }
+
+    table {
+        margin-top: 20px; /* Marge en haut du tableau */
+    }
+
+    th,
+    td {
+        text-align: center; /* Centrer le texte dans les cellules du tableau */
+    }
+
+    p {
+        color: #007bff; /* Couleur du texte du paragraphe */
+    }
+</style>
+
+<h1>Prevision du : @ViewBag.date</h1>
+
+
+<form method="post" action="@Url.Action("ChangeDate", "Prevision")" class="form-inline">
+    <label for="selectedDate">Choisir la Date:</label>
+    <input type="date" id="selectedDate" name="selectedDate" required>
+    <button type="submit" class="btn btn-dark">Soumettre</button>
+</form>
+
+<form method="post" action="@Url.Action("ChangeSource", "Prevision")" class="form-inline">
+    <label for="selectedSource">Choisir la Source:</label>
+    <select id="selectedSource" name="selectedSource" required>
+        @foreach (var source in ViewBag.classe)
+        {
+            <option value="@source.id_source">@source.id_source</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-dark">Soumettre</button>
+</form>
+
+<p>consommation : @ViewBag.consommation </p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Heure</th>
+                <th>Luminosite</th>
+                <th>Puissance Total</th>
+                <th>Puissance Requis</th>
+                <th>Reste Batterie</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prevision in ViewBag.Previsions)
+            {
+                <tr>
+                    <td>@Math.Round(prevision.heure, 2)</td>
+                    <td>@Math.Round(prevision.luminosite, 2)</td>
+                    <td>@Math.Round(prevision.puissance_panneau, 2)</td>
+                    <td>@Math.Round(prevision.puissance_requis, 2)</td>
+                    <td>@Math.Round(prevision.reste_batterie, 2)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p>Heure Coupure: @ViewBag.Coupure[0] heure et @ViewBag.Coupure[1] minutes</p>
